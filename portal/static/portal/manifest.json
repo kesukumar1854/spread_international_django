@@ -1,0 +1,14 @@
+{
+  "name": "Spread International",
+  "short_name": "SpreadIT",
+  "description": "Premium IT Solutions Client Portal",
+  "start_url": "/app/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#cd2122",
+  "orientation": "portrait-primary",
+  "icons": [
+    {"src": "/static/portal/icons/icon-192.png", "sizes": "192x192", "type": "image/png"},
+    {"src": "/static/portal/icons/icon-512.png", "sizes": "512x512", "type": "image/png"}
+  ]
+}

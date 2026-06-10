@@ -1,0 +1,162 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us - Spread International</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <style>
+    .page-hero { background: linear-gradient(135deg, #1a1a2e, #0f3460); padding: 70px 0; text-align: center; color: #fff; }
+    .page-hero h1 { font-family: 'Montserrat',sans-serif; font-size: 40px; font-weight: 800; margin-bottom: 12px; }
+    .breadcrumb { margin-top: 16px; font-size: 13px; color: rgba(255,255,255,0.5); }
+    .breadcrumb a { color: #cd2122; }
+  </style>
+</head>
+<body>
+
+<div class="top-bar">
+  <div class="container">
+    <div><i class="fas fa-phone"></i> +971 52 826 9410 &nbsp; <i class="fas fa-envelope"></i> it@spreadtechnical.com</div>
+    <div class="top-bar-social">
+      <a href="#"><i class="fab fa-facebook-f"></i></a>
+      <a href="#"><i class="fab fa-twitter"></i></a>
+    </div>
+  </div>
+</div>
+
+<header>
+  <nav>
+    <a href="{% url 'home' %}" class="logo">
+      <div class="logo-icon">S</div>
+      <div>Spread <span>Technical</span></div>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="{% url 'home' %}">Home</a></li>
+      <li><a href="{% url 'about' %}">About Us</a></li>
+      <li><a href="{% url 'contact' %}" class="active">Contact Us</a></li>
+      <li><a href="{% url 'contact' %}" class="nav-quote"><strong>FREE</strong>QUOTE</a></li>
+    </ul>
+    <div class="hamburger" onclick="document.getElementById('navLinks').classList.toggle('open')">
+      <span></span><span></span><span></span>
+    </div>
+  </nav>
+</header>
+
+<div class="page-hero">
+  <h1>Contact Us</h1>
+  <p>We'd love to hear from you</p>
+  <div class="breadcrumb"><a href="{% url 'home' %}">Home</a> / Contact Us</div>
+</div>
+
+<section class="quote-section" style="padding:80px 0">
+  <div class="container">
+    <div class="quote-grid">
+      <div class="quote-info">
+        <div class="section-tag">Get in Touch</div>
+        <h2>Let's <span>Talk</span></h2>
+        <p>Contact our team for any IT solutions, maintenance contracts, digital marketing services, or VAT related queries. We respond within 24 hours.</p>
+        <div class="contact-item">
+          <div class="contact-icon">📞</div>
+          <div><strong>Phone</strong><span>+971-528269410</span></div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">✉️</div>
+          <div><strong>Email</strong><span>it@spreadtechnical.com</span></div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">📍</div>
+          <div><strong>Address</strong><span>Spread International, Bur Dubai — U.A.E</span></div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">🕒</div>
+          <div><strong>Working Hours</strong><span>Mon–Sat: 9:00 AM – 6:00 PM</span></div>
+        </div>
+      </div>
+
+      <div class="quote-form-box">
+        <h3>📋 Send Us a Message</h3>
+        {% if messages %}
+          {% for message in messages %}
+          <div class="alert alert-success">{{ message }}</div>
+          {% endfor %}
+        {% endif %}
+        <form method="post">
+          {% csrf_token %}
+          <div class="form-row">
+            <div class="form-group">{{ form.name }}</div>
+            <div class="form-group">{{ form.company }}</div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">{{ form.email }}</div>
+            <div class="form-group">{{ form.phone }}</div>
+          </div>
+          <div class="form-group">{{ form.service }}</div>
+          <div class="form-group">{{ form.message }}</div>
+          <button type="submit" class="btn-submit">Send Message</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div style="text-align:center;padding:20px 0;color:rgba(255,255,255,0.5);font-size:13px">
+      © 2024 Spread International. All rights reserved.
+    </div>
+  </div>
+</footer>
+
+<a href="https://api.whatsapp.com/send?phone=+971528269410" class="whatsapp-float" target="_blank">
+  <i class="fab fa-whatsapp"></i>
+</a>
+<!-- CHATBOT -->
+<div id="chat-widget">
+  <div id="chat-box">
+    <div class="chat-header">
+      <div class="chat-avatar">🤖</div>
+      <div class="chat-header-info">
+        <strong>Aria — AI Assistant</strong>
+        <span><span class="online-dot"></span>Online · Spread International</span>
+      </div>
+      <button id="chat-close" onclick="toggleChat()" title="Close">✕</button>
+    </div>
+    <div class="chat-messages" id="chat-messages"></div>
+    <div class="chat-quick-replies" id="quick-replies">
+      <button class="quick-reply" onclick="sendQuick('What services do you offer?')">Our Services</button>
+      <button class="quick-reply" onclick="sendQuick('How do I contact you?')">Contact Info</button>
+      <button class="quick-reply" onclick="sendQuick('Tell me about AMC pricing')">AMC Pricing</button>
+    </div>
+    <div class="chat-input-area">
+      <input type="text" id="chat-input" placeholder="Ask me anything…" autocomplete="off" />
+      <button id="chat-send" onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
+    </div>
+  </div>
+  <button id="chat-toggle" onclick="toggleChat()">
+    <i class="fas fa-comment-dots" id="chat-icon"></i>
+    <div class="chat-badge">1</div>
+  </button>
+</div>
+
+<script>
+const chatMessages=document.getElementById('chat-messages'),chatInput=document.getElementById('chat-input'),chatSend=document.getElementById('chat-send'),chatBox=document.getElementById('chat-box'),quickReplies=document.getElementById('quick-replies');
+let conversationHistory=[],chatOpened=false;
+function toggleChat(){chatBox.classList.toggle('open');const icon=document.getElementById('chat-icon');if(chatBox.classList.contains('open')){icon.className='fas fa-times';document.querySelector('.chat-badge').style.display='none';if(!chatOpened){chatOpened=true;setTimeout(()=>addBotMessage("👋 Hi! I'm **Aria**, Spread International's AI assistant. How can I help you today?"),400);}}else{icon.className='fas fa-comment-dots';}}
+function addBotMessage(text){removeTyping();const div=document.createElement('div');div.className='msg bot';div.innerHTML='<div class="msg-sender">Aria</div>'+formatMessage(text);chatMessages.appendChild(div);scrollBottom();}
+function addUserMessage(text){const div=document.createElement('div');div.className='msg user';div.innerHTML='<div class="msg-sender">You</div>'+escapeHtml(text);chatMessages.appendChild(div);scrollBottom();quickReplies.style.display='none';}
+function showTyping(){const div=document.createElement('div');div.className='typing-indicator';div.id='typing';div.innerHTML='<span></span><span></span><span></span>';chatMessages.appendChild(div);scrollBottom();}
+function removeTyping(){const t=document.getElementById('typing');if(t)t.remove();}
+function scrollBottom(){chatMessages.scrollTop=chatMessages.scrollHeight;}
+function formatMessage(text){return text.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\*(.*?)\*/g,'<em>$1</em>').replace(/\n- /g,'<br>• ').replace(/\n/g,'<br>');}
+function escapeHtml(text){return text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+async function sendMessage(){const text=chatInput.value.trim();if(!text)return;chatInput.value='';chatSend.disabled=true;addUserMessage(text);conversationHistory.push({role:'user',content:text});showTyping();try{const resp=await fetch('/chatbot/',{method:'POST',headers:{'Content-Type':'application/json','X-CSRFToken':getCookie('csrftoken')},body:JSON.stringify({messages:conversationHistory})});const data=await resp.json();const reply=data.reply||"Sorry, I couldn't process that.";conversationHistory.push({role:'assistant',content:reply});addBotMessage(reply);}catch(e){addBotMessage("Sorry, something went wrong. Call us at **+971-528269410**.");}chatSend.disabled=false;chatInput.focus();}
+function sendQuick(text){chatInput.value=text;sendMessage();}
+chatInput.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMessage();}});
+function getCookie(name){let v=null;document.cookie.split(';').forEach(c=>{const[k,val]=c.trim().split('=');if(k===name)v=decodeURIComponent(val);});return v;}
+</script>
+</body>
+</html>

@@ -1,0 +1,676 @@
+{% load static %}
+{% load custom_filters %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome to Spread International - Best IT Solution Provider in Dubai</title>
+  <meta name="description" content="Spread International is the premium IT solution provider which holds and maintains the core of business i.e. IT - Computer Hardware & Network Structure.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="top-bar">
+  <div class="container">
+    <div>
+      <i class="fas fa-phone"></i> QUESTIONS? CALL:
+      <a href="tel:+971528269410"> +971 52 826 9410</a>
+      &nbsp;&nbsp;
+      <i class="fas fa-envelope"></i>
+      <a href="mailto:it@spreadtechnical.com"> it@spreadtechnical.com</a>
+    </div>
+    <div class="top-bar-social">
+      <a href="https://www.facebook.com/Spread-International-your-It-Solution-416457475437874/" target="_blank"><i class="fab fa-facebook-f"></i></a>
+      <a href="#"><i class="fab fa-twitter"></i></a>
+      <a href="#"><i class="fab fa-linkedin-in"></i></a>
+      <a href="#"><i class="fab fa-instagram"></i></a>
+    </div>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header>
+  <nav>
+    <a href="{% url 'home' %}" class="logo">
+      <div class="logo-icon">S</div>
+      <div>Spread <span>Technical</span></div>
+    </a>
+
+    <ul class="nav-links" id="navLinks">
+      <li><a href="{% url 'home' %}" class="active">Home</a></li>
+      <li><a href="{% url 'about' %}">About Us</a></li>
+      <li class="dropdown mega-dropdown">
+        <a href="#">Solutions &amp; Services <i class="fas fa-chevron-down" style="font-size:10px"></i></a>
+        <ul class="dropdown-menu">
+          <li class="dropdown-col">
+            <h4>IT Solutions</h4>
+            <ul>
+              <li><a href="#">IT Hardware &amp; Network Services</a></li>
+              <li><a href="#">Annual Maintenance Contract (AMC)</a></li>
+              <li><a href="#">Server, Computer &amp; Laptop Sales</a></li>
+              <li><a href="#">Network / Security Solutions</a></li>
+              <li><a href="#">Structured Cabling</a></li>
+              <li><a href="#">IP Camera Solution</a></li>
+              <li><a href="#">Backup Solution</a></li>
+              <li><a href="#">Antivirus Solution</a></li>
+              <li><a href="#">Telephone PABX Solution</a></li>
+            </ul>
+          </li>
+          <li class="dropdown-col">
+            <h4>Digital Marketing</h4>
+            <ul>
+              <li><a href="#">Web Development</a></li>
+              <li><a href="#">Graphics Designing</a></li>
+              <li><a href="#">Mobile Apps Development</a></li>
+              <li><a href="#">Digital Marketing</a></li>
+              <li><a href="#">Social Media Management</a></li>
+              <li><a href="#">Email Marketing</a></li>
+            </ul>
+          </li>
+          <li class="dropdown-col">
+            <h4>VAT Related IT Solutions</h4>
+            <ul>
+              <li><a href="#">VAT / Tax Consultation</a></li>
+              <li><a href="#">VAT Registration</a></li>
+              <li><a href="#">VAT Consultancy &amp; Impact Assessment</a></li>
+              <li><a href="#">VAT Implementation &amp; Training</a></li>
+              <li><a href="#">VAT Accounting &amp; Compliance</a></li>
+              <li><a href="#">Filing of VAT Returns</a></li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li><a href="{% url 'contact' %}">Contact Us</a></li>
+      <li><a href="{% url 'portal:app' %}" class="nav-quote" style="background:#1a1a1a;border-color:#1a1a1a"><strong>CLIENT</strong>PORTAL</a></li>
+      <li><a href="#quote" class="nav-quote"><strong>FREE</strong>QUOTE</a></li>
+    </ul>
+
+    <div class="hamburger" id="hamburger" onclick="toggleNav()">
+      <span></span><span></span><span></span>
+    </div>
+  </nav>
+</header>
+
+<!-- HERO SLIDER -->
+<section class="hero" id="hero">
+  <div class="hero-slide hero-slide-1 active">
+    <div class="hero-content">
+      <div class="hero-badge">Premium IT Solutions</div>
+      <h1>Your Trusted IT <span>Solution Provider</span> in Dubai</h1>
+      <p>We deliver end-to-end IT solutions — from hardware & network infrastructure to digital marketing and VAT services.</p>
+      <div class="hero-cta">
+        <a href="#quote" class="btn-primary">Get Free Quote</a>
+        <a href="{% url 'about' %}" class="btn-outline">Learn More</a>
+      </div>
+    </div>
+  </div>
+  <div class="hero-slide hero-slide-2">
+    <div class="hero-content">
+      <div class="hero-badge">Annual Maintenance Contract</div>
+      <h1>AMC Starting <span>AED 1999*</span> Onwards</h1>
+      <p>Comprehensive annual IT maintenance contracts to keep your business running smoothly 24/7.</p>
+      <div class="hero-cta">
+        <a href="#quote" class="btn-primary">Get AMC Quote</a>
+        <a href="{% url 'contact' %}" class="btn-outline">Contact Us</a>
+      </div>
+    </div>
+  </div>
+  <div class="hero-slide hero-slide-3">
+    <div class="hero-content">
+      <div class="hero-badge">Up to 40% Off</div>
+      <h1>Special Offers on <span>IT Services</span></h1>
+      <p>Enjoy exclusive discounts on selected IT services. Get expert support at unbeatable prices for your business.</p>
+      <div class="hero-cta">
+        <a href="#quote" class="btn-primary">Claim Offer</a>
+        <a href="{% url 'contact' %}" class="btn-outline">Talk to Us</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-arrows">
+    <button class="hero-arrow" onclick="changeSlide(-1)"><i class="fas fa-chevron-left"></i></button>
+    <button class="hero-arrow" onclick="changeSlide(1)"><i class="fas fa-chevron-right"></i></button>
+  </div>
+  <div class="hero-controls">
+    <button class="hero-dot active" onclick="goToSlide(0)"></button>
+    <button class="hero-dot" onclick="goToSlide(1)"></button>
+    <button class="hero-dot" onclick="goToSlide(2)"></button>
+  </div>
+</section>
+
+<!-- AMC BANNER -->
+<div class="amc-banner">
+  <div class="container">
+    <h2>GET <strong>ANNUAL MAINTENANCE CONTRACT</strong> &nbsp; AED <strong>1999*</strong> ONWARDS
+      <a href="#quote">CONTACT US →</a>
+    </h2>
+  </div>
+</div>
+
+<!-- ABOUT INTRO -->
+<section class="about-intro">
+  <div class="container">
+    <div class="section-tag">Who We Are</div>
+    <h2>Spread International — Premium IT Solution Provider</h2>
+    <p>We are the premium IT solution provider which holds and maintains the core of business i.e. IT — Computer Hardware &amp; Network Structure. Our dedicated team of professionals serves clients with utmost integrity and an ambition of long-term partnership.</p>
+    <p>We prefer working under the directions of our client, providing support for their network or equipment because client satisfaction is the primary concern for us at Spread International.</p>
+    <a href="{% url 'about' %}" class="btn-primary">Find Out More</a>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-tag">What We Offer</div>
+      <h2>We Exclusively Offer a Variety of Services</h2>
+      <p>End-to-end IT solutions and services ranging from simple supply and installation of Hardware / Software / Surveillance to configuration and maintenance of large Enterprise Servers. We also cover Digital Marketing, Web Development, and VAT-related services.</p>
+    </div>
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-icon">🖥️</div>
+        <h3>IT Services &amp; Solutions</h3>
+        <p>Our expert IT professionals deliver services that are hard to find in our market rivals.</p>
+        <ul>
+          <li>IT Hardware &amp; Network Services</li>
+          <li>Annual Maintenance Contract (AMC)</li>
+          <li>Server, Computer, Laptop Sales &amp; Services</li>
+          <li>Network / Security Solutions</li>
+          <li>Structured Cabling</li>
+          <li>Backup &amp; Antivirus Solution</li>
+          <li>IP Camera Solution</li>
+          <li>Panasonic Analog Telephone Solution</li>
+        </ul>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">📱</div>
+        <h3>Digital Marketing</h3>
+        <p>Cutting-edge, full service digital marketing solutions that design, develop and implement custom digital advertising.</p>
+        <ul>
+          <li>Web Development</li>
+          <li>Mobile Apps Development</li>
+          <li>Social Media Management</li>
+          <li>Search Engine Optimization</li>
+          <li>Email Marketing</li>
+          <li>Graphics Designing</li>
+        </ul>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">📊</div>
+        <h3>VAT Related IT Solutions</h3>
+        <p>Focus on business only — we will take care of your Accounting and VAT requirements.</p>
+        <ul>
+          <li>VAT / Tax Consultation</li>
+          <li>VAT Registration</li>
+          <li>VAT Consultancy &amp; Impact Assessment</li>
+          <li>VAT Implementation &amp; Training</li>
+          <li>VAT Accounting &amp; Compliance</li>
+          <li>Filing of VAT Returns</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="process">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-tag" style="color:#cd2122">Our Process</div>
+      <h2>Our Working Process in 4 Steps</h2>
+      <p>We enforce our manpower to enhance the performance, maintainability and other attributes of your company.</p>
+    </div>
+    <div class="process-steps">
+      <div class="process-step">
+        <div class="step-number">1</div>
+        <h3>Requirement Analysis</h3>
+        <p>We do in-depth research to analyze client requirements, which is critical to the success of any system.</p>
+      </div>
+      <div class="process-step">
+        <div class="step-number">2</div>
+        <h3>Design &amp; Develop</h3>
+        <p>The solution is designed by developers and concept owners, built according to design, and validated from end-user perspectives.</p>
+      </div>
+      <div class="process-step">
+        <div class="step-number">3</div>
+        <h3>Test &amp; Deliver</h3>
+        <p>We believe in strong project closure — our team ensures all critical success factors have been met before delivery.</p>
+      </div>
+      <div class="process-step">
+        <div class="step-number">4</div>
+        <h3>Client Satisfaction</h3>
+        <p>Our safety measures and proper strategy make clients safe at every stage. Trust and credibility keep clients happy.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-tag">Our Expertise</div>
+      <h2>Comprehensive Technology Solutions</h2>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-img feature-img-it">🏗️</div>
+        <div class="feature-body">
+          <h3>IT Infrastructure</h3>
+          <p>We help you implement a sound IT infrastructure — the most important asset for an enterprise to align its business and IT operations.</p>
+        </div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-img feature-img-network">🌐</div>
+        <div class="feature-body">
+          <h3>Network Solutions</h3>
+          <p>Resolve potential issues before they impact your business with 24/7/365 monitoring and continual maintenance of your servers and network.</p>
+        </div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-img feature-img-web">💻</div>
+        <div class="feature-body">
+          <h3>Complete Web Solutions</h3>
+          <p>Each team member is dedicated to their own skill set in programming, graphics, content, site flow and optimization.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-tag">Client Reviews</div>
+      <h2>What Our Clients Say</h2>
+    </div>
+    <div class="testimonials-grid">
+      {% for t in testimonials %}
+      <div class="testimonial-card">
+        <p>{{ t.quote }}</p>
+        <div class="testimonial-author">
+          <div class="author-avatar">{{ t.name|first }}</div>
+          <div class="author-info">
+            <strong>{{ t.name }}</strong>
+            <span>{{ t.title }}</span>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- PARTNERS -->
+<section class="partners">
+  <div class="container">
+    <h2>Technologies &amp; Partners We Work With</h2>
+    <div class="partners-logos">
+      {% for partner in "D-Link,Dell,Panasonic,AMD,Cisco,Epson,Office 365,Samsung,Windows,Microsoft,HP,Lenovo,Compaq,Fujitsu"|split:"," %}
+      <div class="partner-logo">{{ partner }}</div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- BLOG -->
+<section class="blog">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-tag">Latest Stories</div>
+      <h2>From Our Blog</h2>
+    </div>
+    <div class="blog-grid">
+      <div class="blog-card">
+        <div class="blog-img blog-img-1">🏭</div>
+        <div class="blog-body">
+          <div class="blog-meta">22 August 2015 · <span>Technology</span></div>
+          <h3>Cisco Goes After Industrial IoT</h3>
+          <a href="#">Read more +</a>
+        </div>
+      </div>
+      <div class="blog-card">
+        <div class="blog-img blog-img-2">🔥</div>
+        <div class="blog-body">
+          <div class="blog-meta">21 August 2015 · <span>Technology</span></div>
+          <h3>What Is a Firewall? How They Work and How They Fit Into Enterprise Security</h3>
+          <a href="#">Read more +</a>
+        </div>
+      </div>
+      <div class="blog-card">
+        <div class="blog-img blog-img-3">🛠️</div>
+        <div class="blog-body">
+          <div class="blog-meta">07 August 2015 · <span>Technology</span></div>
+          <h3>Useful and Free Networking Tools That Are Windows 10 Apps</h3>
+          <a href="#">Read more +</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QUOTE FORM -->
+<section class="quote-section" id="quote">
+  <div class="container">
+    <div class="quote-grid">
+      <div class="quote-info">
+        <div class="section-tag">Free Consultation</div>
+        <h2>Get a <span>Free Quote</span></h2>
+        <p>We prefer working under the directions of our client while providing support for their network or equipment — client satisfaction is the primary concern for us at Spread International.</p>
+        <div class="contact-item">
+          <div class="contact-icon">📞</div>
+          <div>
+            <strong>Phone</strong>
+            <span>+971-528269410</span>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">✉️</div>
+          <div>
+            <strong>Email</strong>
+            <span>it@spreadtechnical.com</span>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">📍</div>
+          <div>
+            <strong>Address</strong>
+            <span>Spread International, Bur Dubai — U.A.E</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="quote-form-box">
+        <h3>📋 Request a Free Quote</h3>
+
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-success">{{ message }}</div>
+        {% endfor %}
+        {% endif %}
+
+        <form method="post">
+          {% csrf_token %}
+          <div class="form-row">
+            <div class="form-group">{{ form.name }}</div>
+            <div class="form-group">{{ form.company }}</div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">{{ form.email }}</div>
+            <div class="form-group">{{ form.phone }}</div>
+          </div>
+          <div class="form-group">{{ form.service }}</div>
+          <div class="form-group">{{ form.message }}</div>
+          <button type="submit" class="btn-submit">Get a Quote Now!</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo" style="margin-bottom:14px">
+          <div class="logo-icon">S</div>
+          <div style="color:#fff">Spread <span style="color:#cd2122">Technical</span></div>
+        </div>
+        <p>We prefer working under the directions of our client while providing support for their network or equipment — client satisfaction is our primary concern.</p>
+        <div class="footer-social">
+          <a href="https://www.facebook.com/Spread-International-your-It-Solution-416457475437874/" target="_blank"><i class="fab fa-facebook-f"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-linkedin-in"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+        </div>
+      </div>
+
+      <div>
+        <h4>Quick Links</h4>
+        <ul class="footer-links">
+          <li><a href="#">Annual Maintenance Contract</a></li>
+          <li><a href="#">VAT Registration</a></li>
+          <li><a href="#">Web Development</a></li>
+          <li><a href="#">Graphics Designing</a></li>
+          <li><a href="#">VAT Related Solution</a></li>
+          <li><a href="#">Email Marketing</a></li>
+          <li><a href="#">Digital Marketing</a></li>
+          <li><a href="#">IP Camera Solution</a></li>
+          <li><a href="#">Structured Cabling</a></li>
+          <li><a href="#">Telephone PABX Solution</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4>IT Solutions</h4>
+        <ul class="footer-links">
+          <li><a href="#">IT Hardware &amp; Network</a></li>
+          <li><a href="#">Server &amp; Laptop Sales</a></li>
+          <li><a href="#">Network / Security</a></li>
+          <li><a href="#">Backup Solution</a></li>
+          <li><a href="#">Antivirus Solution</a></li>
+          <li><a href="#">Filing of VAT Returns</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4>Get in Touch</h4>
+        <div class="footer-contact-item">
+          <i class="fas fa-phone"></i>
+          <span>+971-528269410</span>
+        </div>
+        <div class="footer-contact-item">
+          <i class="fas fa-envelope"></i>
+          <span>it@spreadtechnical.com</span>
+        </div>
+        <div class="footer-contact-item">
+          <i class="fas fa-map-marker-alt"></i>
+          <span>Bur Dubai, U.A.E</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2024 Spread International. All rights reserved. Built with Django.</p>
+  </div>
+</footer>
+
+<!-- WhatsApp Float Button -->
+<a href="https://api.whatsapp.com/send?phone=+971528269410&text=Hello" class="whatsapp-float" target="_blank" title="Chat on WhatsApp">
+  <i class="fab fa-whatsapp"></i>
+</a>
+
+<!-- ===== CHATBOT WIDGET ===== -->
+<div id="chat-widget">
+  <div id="chat-box">
+    <div class="chat-header">
+      <div class="chat-avatar">🤖</div>
+      <div class="chat-header-info">
+        <strong>Aria — AI Assistant</strong>
+        <span><span class="online-dot"></span>Online · Spread International</span>
+      </div>
+      <button id="chat-close" onclick="toggleChat()" title="Close">✕</button>
+    </div>
+
+    <div class="chat-messages" id="chat-messages"></div>
+
+    <div class="chat-quick-replies" id="quick-replies">
+      <button class="quick-reply" onclick="sendQuick('What services do you offer?')">Our Services</button>
+      <button class="quick-reply" onclick="sendQuick('What is the AMC price?')">AMC Pricing</button>
+      <button class="quick-reply" onclick="sendQuick('How do I contact your team?')">Contact Info</button>
+      <button class="quick-reply" onclick="sendQuick('Do you offer web development?')">Web Dev</button>
+    </div>
+
+    <div class="chat-input-area">
+      <input type="text" id="chat-input" placeholder="Ask me anything…" autocomplete="off" />
+      <button id="chat-send" onclick="sendMessage()" title="Send"><i class="fas fa-paper-plane"></i></button>
+    </div>
+  </div>
+
+  <button id="chat-toggle" onclick="toggleChat()" title="Chat with us">
+    <i class="fas fa-comment-dots" id="chat-icon"></i>
+    <div class="chat-badge">1</div>
+  </button>
+</div>
+
+<script>
+// ---- CHATBOT ----
+const chatMessages = document.getElementById('chat-messages');
+const chatInput = document.getElementById('chat-input');
+const chatSend = document.getElementById('chat-send');
+const chatBox = document.getElementById('chat-box');
+const quickReplies = document.getElementById('quick-replies');
+let conversationHistory = [];
+let chatOpened = false;
+
+function toggleChat() {
+  chatBox.classList.toggle('open');
+  const icon = document.getElementById('chat-icon');
+  if (chatBox.classList.contains('open')) {
+    icon.className = 'fas fa-times';
+    document.querySelector('.chat-badge').style.display = 'none';
+    if (!chatOpened) {
+      chatOpened = true;
+      setTimeout(() => addBotMessage("👋 Hi there! I'm **Aria**, your AI assistant for Spread International.\n\nI can help you with our IT services, pricing, support, or anything else. What can I help you with today?"), 400);
+    }
+  } else {
+    icon.className = 'fas fa-comment-dots';
+  }
+}
+
+function addBotMessage(text) {
+  removeTyping();
+  const div = document.createElement('div');
+  div.className = 'msg bot';
+  div.innerHTML = '<div class="msg-sender">Aria</div>' + formatMessage(text);
+  chatMessages.appendChild(div);
+  scrollBottom();
+}
+
+function addUserMessage(text) {
+  const div = document.createElement('div');
+  div.className = 'msg user';
+  div.innerHTML = '<div class="msg-sender">You</div>' + escapeHtml(text);
+  chatMessages.appendChild(div);
+  scrollBottom();
+  quickReplies.style.display = 'none';
+}
+
+function showTyping() {
+  const div = document.createElement('div');
+  div.className = 'typing-indicator';
+  div.id = 'typing';
+  div.innerHTML = '<span></span><span></span><span></span>';
+  chatMessages.appendChild(div);
+  scrollBottom();
+}
+
+function removeTyping() {
+  const t = document.getElementById('typing');
+  if (t) t.remove();
+}
+
+function scrollBottom() {
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+function formatMessage(text) {
+  return text
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.*?)\*/g, '<em>$1</em>')
+    .replace(/\n- /g, '<br>• ')
+    .replace(/\n/g, '<br>');
+}
+
+function escapeHtml(text) {
+  return text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+async function sendMessage() {
+  const text = chatInput.value.trim();
+  if (!text) return;
+  chatInput.value = '';
+  chatSend.disabled = true;
+
+  addUserMessage(text);
+  conversationHistory.push({ role: 'user', content: text });
+
+  showTyping();
+
+  try {
+    const resp = await fetch('/chatbot/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-CSRFToken': getCookie('csrftoken') },
+      body: JSON.stringify({ messages: conversationHistory })
+    });
+    const data = await resp.json();
+    const reply = data.reply || "Sorry, I couldn't process that. Please try again.";
+    conversationHistory.push({ role: 'assistant', content: reply });
+    addBotMessage(reply);
+  } catch (e) {
+    addBotMessage("Sorry, something went wrong. Please call us at **+971-528269410** or email **it@spreadtechnical.com**.");
+  }
+
+  chatSend.disabled = false;
+  chatInput.focus();
+}
+
+function sendQuick(text) {
+  chatInput.value = text;
+  sendMessage();
+}
+
+chatInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+});
+
+function getCookie(name) {
+  let v = null;
+  document.cookie.split(';').forEach(c => {
+    const [k, val] = c.trim().split('=');
+    if (k === name) v = decodeURIComponent(val);
+  });
+  return v;
+}
+</script>
+
+<script>
+// Slider
+let currentSlide = 0;
+const slides = document.querySelectorAll('.hero-slide');
+const dots = document.querySelectorAll('.hero-dot');
+
+function goToSlide(n) {
+  slides[currentSlide].classList.remove('active');
+  dots[currentSlide].classList.remove('active');
+  currentSlide = (n + slides.length) % slides.length;
+  slides[currentSlide].classList.add('active');
+  dots[currentSlide].classList.add('active');
+}
+
+function changeSlide(dir) { goToSlide(currentSlide + dir); }
+
+setInterval(() => changeSlide(1), 5000);
+
+// Nav toggle
+function toggleNav() {
+  document.getElementById('navLinks').classList.toggle('open');
+}
+
+// Smooth scroll
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth' }); }
+  });
+});
+</script>
+</body>
+</html>

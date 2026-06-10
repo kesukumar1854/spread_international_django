@@ -1,0 +1,974 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="SpreadIT">
+<meta name="theme-color" content="#cd2122">
+<title>Spread International — Client Portal</title>
+<link rel="manifest" href="{% static 'portal/manifest.json' %}">
+<link rel="apple-touch-icon" href="{% static 'portal/icons/icon-192.png' %}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="{% static 'portal/css/app.css' %}">
+</head>
+<body>
+
+<!-- SPLASH -->
+<div id="splash">
+  <div class="logo">📡</div>
+  <h1>Spread International</h1>
+  <p>Premium IT Solutions Portal</p>
+  <div class="spinner"></div>
+</div>
+
+<!-- AUTH SCREEN -->
+<div id="auth-screen" style="display:none">
+  <div class="auth-header">
+    <div class="auth-logo">📡</div>
+    <h1>Client Portal</h1>
+    <p>Spread International — Dubai, UAE</p>
+  </div>
+  <div class="auth-tabs">
+    <button class="auth-tab active" onclick="switchAuthTab('login')">Sign In</button>
+    <button class="auth-tab" onclick="switchAuthTab('register')">Create Account</button>
+  </div>
+  <div class="auth-form-container">
+    <!-- LOGIN -->
+    <div class="auth-form active" id="login-form">
+      <div id="login-error" class="auth-error"></div>
+      <div class="form-group">
+        <label>Username</label>
+        <input id="login-username" type="text" placeholder="Enter your username" autocomplete="username">
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input id="login-password" type="password" placeholder="Enter your password" autocomplete="current-password">
+      </div>
+      <button class="btn btn-primary" onclick="doLogin()">Sign In</button>
+      <p style="text-align:center;font-size:12px;color:var(--gray)">Don't have an account? <a onclick="switchAuthTab('register')" style="color:var(--red);cursor:pointer;font-weight:600">Register free</a></p>
+    </div>
+    <!-- REGISTER -->
+    <div class="auth-form" id="register-form">
+      <div id="reg-error" class="auth-error"></div>
+      <div class="form-group">
+        <label>Full Name</label>
+        <input id="reg-name" type="text" placeholder="Your full name">
+      </div>
+      <div class="form-row-2">
+        <div class="form-group">
+          <label>Username</label>
+          <input id="reg-username" type="text" placeholder="username">
+        </div>
+        <div class="form-group">
+          <label>Phone</label>
+          <input id="reg-phone" type="tel" placeholder="+971...">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input id="reg-email" type="email" placeholder="you@example.com">
+      </div>
+      <div class="form-group">
+        <label>Company (optional)</label>
+        <input id="reg-company" type="text" placeholder="Your company name">
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input id="reg-password" type="password" placeholder="Create a strong password">
+      </div>
+      <button class="btn btn-primary" onclick="doRegister()">Create Account</button>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN APP -->
+<div id="app">
+  <!-- TOP NAV -->
+  <div class="app-topnav">
+    <div class="topnav-logo">S</div>
+    <div class="topnav-title">
+      <strong>Spread IT Portal</strong>
+      <span id="topnav-greeting">Loading...</span>
+    </div>
+    <button class="notif-btn" onclick="showPage('notifications')" title="Notifications">
+      🔔
+      <div class="notif-badge" id="notif-badge" style="display:none">0</div>
+    </button>
+  </div>
+
+  <!-- PAGES -->
+  <div class="app-pages">
+
+    <!-- DASHBOARD -->
+    <div class="page active" id="page-dashboard">
+      <div class="greeting-card">
+        <h2 id="dash-greeting">Good day! 👋</h2>
+        <p>Here's your activity overview</p>
+        <div class="greeting-meta">
+          <div class="greeting-stat"><strong id="dash-active-bookings">—</strong><span>Active</span></div>
+          <div class="greeting-stat"><strong id="dash-open-tickets">—</strong><span>Open Tickets</span></div>
+          <div class="greeting-stat"><strong id="dash-total">—</strong><span>Total Bookings</span></div>
+        </div>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon red">📅</div>
+          <div class="stat-info"><strong id="stat-bookings">—</strong><span>Total Bookings</span></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon green">✅</div>
+          <div class="stat-info"><strong id="stat-resolved">—</strong><span>Resolved Tickets</span></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon blue">🎫</div>
+          <div class="stat-info"><strong id="stat-open-tickets">—</strong><span>Open Tickets</span></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon orange">⚡</div>
+          <div class="stat-info"><strong id="stat-active">—</strong><span>Active Services</span></div>
+        </div>
+      </div>
+
+      <div class="section-title">Recent Bookings <a onclick="showPage('bookings')">See all →</a></div>
+      <div class="item-list" id="dash-bookings-list"><div class="loading"></div></div>
+
+      <div class="section-title" style="margin-top:16px">Recent Tickets <a onclick="showPage('tickets')">See all →</a></div>
+      <div class="item-list" id="dash-tickets-list"><div class="loading"></div></div>
+
+      <div style="height:8px"></div>
+    </div>
+
+    <!-- BOOKINGS -->
+    <div class="page" id="page-bookings">
+      <div class="page-header">
+        <h2>My Bookings</h2>
+      </div>
+      <div class="item-list" id="bookings-list"><div class="loading"></div></div>
+    </div>
+
+    <!-- TICKETS -->
+    <div class="page" id="page-tickets">
+      <div class="page-header">
+        <h2>Support Tickets</h2>
+      </div>
+      <div class="item-list" id="tickets-list"><div class="loading"></div></div>
+    </div>
+
+    <!-- TICKET DETAIL (sub-page) -->
+    <div class="page" id="page-ticket-detail">
+      <div class="page-header">
+        <button class="back-btn" onclick="showPage('tickets')">←</button>
+        <h2 id="ticket-detail-title">Ticket</h2>
+      </div>
+      <div class="ticket-info-card" id="ticket-detail-info"></div>
+      <div class="section-title">Conversation</div>
+      <div class="message-thread" id="ticket-thread"></div>
+      <div class="form-group">
+        <textarea id="ticket-reply-text" rows="3" placeholder="Type your reply..." style="resize:none;width:100%;border:1.5px solid var(--border);border-radius:10px;padding:12px;font-family:var(--font);font-size:14px;outline:none"></textarea>
+      </div>
+      <button class="btn btn-primary" onclick="sendTicketReply()" style="width:100%">Send Reply</button>
+    </div>
+
+    <!-- AI CHAT -->
+    <div class="page" id="page-chat">
+      <div class="chat-top">
+        <div class="chat-avatar-big">🤖</div>
+        <div class="chat-top-info">
+          <strong>Aria — AI Assistant</strong>
+          <span><span class="online-dot"></span>Online · Powered by Claude AI</span>
+        </div>
+      </div>
+      <div class="chat-messages-area" id="app-chat-messages"></div>
+      <div class="chat-quick-pills" id="chat-pills">
+        <button class="quick-pill" onclick="sendChatQuick('What services do you offer?')">📋 Services</button>
+        <button class="quick-pill" onclick="sendChatQuick('What is AMC pricing?')">💰 AMC Price</button>
+        <button class="quick-pill" onclick="sendChatQuick('How do I raise a support ticket?')">🎫 Support</button>
+        <button class="quick-pill" onclick="sendChatQuick('I need help with my network')">🌐 Network Help</button>
+        <button class="quick-pill" onclick="sendChatQuick('Tell me about VAT services')">📊 VAT</button>
+      </div>
+      <div class="chat-input-row">
+        <input id="app-chat-input" type="text" placeholder="Ask Aria anything…" autocomplete="off">
+        <button class="send-btn" id="app-chat-send" onclick="sendAppChat()"><i class="fas fa-paper-plane"></i></button>
+      </div>
+    </div>
+
+    <!-- NOTIFICATIONS -->
+    <div class="page" id="page-notifications">
+      <div class="page-header">
+        <button class="back-btn" onclick="goBack()">←</button>
+        <h2>Notifications</h2>
+      </div>
+      <div id="notif-list"><div class="loading"></div></div>
+    </div>
+
+    <!-- PROFILE -->
+    <div class="page" id="page-profile">
+      <div class="profile-avatar-section">
+        <div class="avatar-circle" id="profile-avatar">👤</div>
+        <div class="profile-name" id="profile-name">Loading...</div>
+        <div class="profile-email" id="profile-email"></div>
+        <div class="profile-since" id="profile-since"></div>
+      </div>
+
+      <div class="section-title" style="margin-bottom:8px">Account</div>
+      <div class="menu-list">
+        <button class="menu-item" onclick="openEditProfile()">
+          <span class="menu-icon">✏️</span>
+          <span class="menu-label">Edit Profile</span>
+          <span class="menu-arrow">›</span>
+        </button>
+        <button class="menu-item" onclick="showPage('bookings')">
+          <span class="menu-icon">📅</span>
+          <span class="menu-label">My Bookings</span>
+          <span class="menu-arrow">›</span>
+        </button>
+        <button class="menu-item" onclick="showPage('tickets')">
+          <span class="menu-icon">🎫</span>
+          <span class="menu-label">Support Tickets</span>
+          <span class="menu-arrow">›</span>
+        </button>
+        <button class="menu-item" onclick="showPage('notifications')">
+          <span class="menu-icon">🔔</span>
+          <span class="menu-label">Notifications</span>
+          <span class="menu-arrow">›</span>
+        </button>
+      </div>
+
+      <div class="section-title" style="margin-top:16px;margin-bottom:8px">Help & Info</div>
+      <div class="menu-list">
+        <button class="menu-item" onclick="callUs()">
+          <span class="menu-icon">📞</span>
+          <span class="menu-label">Call Us: +971-528269410</span>
+          <span class="menu-arrow">›</span>
+        </button>
+        <button class="menu-item" onclick="emailUs()">
+          <span class="menu-icon">✉️</span>
+          <span class="menu-label">Email: it@spreadtechnical.com</span>
+          <span class="menu-arrow">›</span>
+        </button>
+        <button class="menu-item" onclick="openWhatsApp()">
+          <span class="menu-icon">💬</span>
+          <span class="menu-label">WhatsApp Support</span>
+          <span class="menu-arrow">›</span>
+        </button>
+        <a href="/" class="menu-item" style="text-decoration:none">
+          <span class="menu-icon">🌐</span>
+          <span class="menu-label">Visit Our Website</span>
+          <span class="menu-arrow">›</span>
+        </a>
+      </div>
+
+      <div style="margin-top:20px;padding:0 4px">
+        <button class="btn btn-ghost" onclick="doLogout()" style="width:100%">Sign Out</button>
+      </div>
+      <div style="height:8px"></div>
+    </div>
+
+  </div><!-- /app-pages -->
+
+  <!-- BOTTOM NAV -->
+  <nav class="app-bottom-nav">
+    <button class="nav-item active" id="nav-dashboard" onclick="showPage('dashboard')">
+      <span class="nav-icon">🏠</span>
+      <span class="nav-label">Dashboard</span>
+    </button>
+    <button class="nav-item" id="nav-bookings" onclick="showPage('bookings')">
+      <span class="nav-icon">📅</span>
+      <span class="nav-label">Bookings</span>
+      <span class="nav-badge" id="nav-bookings-badge" style="display:none">0</span>
+    </button>
+    <button class="nav-item" id="nav-tickets" onclick="showPage('tickets')">
+      <span class="nav-icon">🎫</span>
+      <span class="nav-label">Support</span>
+      <span class="nav-badge" id="nav-tickets-badge" style="display:none">0</span>
+    </button>
+    <button class="nav-item" id="nav-chat" onclick="showPage('chat')">
+      <span class="nav-icon">🤖</span>
+      <span class="nav-label">AI Chat</span>
+    </button>
+    <button class="nav-item" id="nav-profile" onclick="showPage('profile')">
+      <span class="nav-icon">👤</span>
+      <span class="nav-label">Profile</span>
+    </button>
+  </nav>
+</div><!-- /app -->
+
+<!-- MODALS -->
+
+<!-- New Booking Modal -->
+<div class="modal-overlay" id="booking-modal">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <h3>📅 Book a Service</h3>
+    <div class="form-group">
+      <label>Service</label>
+      <select id="bk-service"></select>
+    </div>
+    <div class="form-group">
+      <label>Description / Requirements</label>
+      <textarea id="bk-description" rows="3" placeholder="Describe what you need..."></textarea>
+    </div>
+    <div class="form-row-2">
+      <div class="form-group">
+        <label>Preferred Date</label>
+        <input id="bk-date" type="date">
+      </div>
+      <div class="form-group">
+        <label>Preferred Time</label>
+        <input id="bk-time" type="time">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('booking-modal')">Cancel</button>
+      <button class="btn btn-primary" onclick="submitBooking()">Book Now</button>
+    </div>
+  </div>
+</div>
+
+<!-- New Ticket Modal -->
+<div class="modal-overlay" id="ticket-modal">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <h3>🎫 New Support Ticket</h3>
+    <div class="form-group">
+      <label>Subject</label>
+      <input id="tk-subject" type="text" placeholder="Brief description of your issue">
+    </div>
+    <div class="form-row-2">
+      <div class="form-group">
+        <label>Category</label>
+        <select id="tk-category"></select>
+      </div>
+      <div class="form-group">
+        <label>Priority</label>
+        <select id="tk-priority">
+          <option value="low">Low</option>
+          <option value="medium" selected>Medium</option>
+          <option value="high">High</option>
+          <option value="urgent">Urgent</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Describe your issue</label>
+      <textarea id="tk-message" rows="4" placeholder="Provide as much detail as possible..."></textarea>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('ticket-modal')">Cancel</button>
+      <button class="btn btn-primary" onclick="submitTicket()">Submit Ticket</button>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Profile Modal -->
+<div class="modal-overlay" id="profile-modal">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <h3>✏️ Edit Profile</h3>
+    <div class="form-group">
+      <label>Full Name</label>
+      <input id="ep-name" type="text">
+    </div>
+    <div class="form-group">
+      <label>Email</label>
+      <input id="ep-email" type="email">
+    </div>
+    <div class="form-row-2">
+      <div class="form-group">
+        <label>Phone</label>
+        <input id="ep-phone" type="tel">
+      </div>
+      <div class="form-group">
+        <label>Company</label>
+        <input id="ep-company" type="text">
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Address</label>
+      <textarea id="ep-address" rows="2"></textarea>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('profile-modal')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveProfile()">Save Changes</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <span id="toast-icon">✓</span>
+  <span id="toast-text"></span>
+</div>
+
+<!-- Install Banner -->
+<div id="install-banner" style="display:none">
+  <span class="install-icon">📲</span>
+  <div class="install-text">
+    <strong>Add to Home Screen</strong>
+    <span>Install for quick access</span>
+  </div>
+  <button class="btn btn-primary btn-sm" id="install-btn">Install</button>
+  <button class="btn btn-ghost btn-sm" onclick="document.getElementById('install-banner').style.display='none'">✕</button>
+</div>
+
+<script>
+// ── GLOBALS ──────────────────────────────────────────────────────────────────
+const API = {
+  me:         '/app/api/me/',
+  dashboard:  '/app/api/dashboard/',
+  bookings:   '/app/api/bookings/',
+  tickets:    '/app/api/tickets/',
+  ticket:     id => `/app/api/tickets/${id}/`,
+  cancelBk:   id => `/app/api/bookings/${id}/cancel/`,
+  notifs:     '/app/api/notifications/',
+  services:   '/app/api/services/',
+  aiChat:     '/app/api/ai-chat/',
+  login:      '/app/login/',
+  register:   '/app/register/',
+  logout:     '/app/logout/',
+  updateMe:   '/app/api/me/update/',
+};
+
+let currentUser = null;
+let currentPage = 'dashboard';
+let prevPage = null;
+let appChatHistory = [];
+let currentTicketId = null;
+let servicesList = [];
+let deferredInstall = null;
+
+// ── UTILS ─────────────────────────────────────────────────────────────────────
+function getCsrf() {
+  const v = document.cookie.split(';').find(c => c.trim().startsWith('csrftoken='));
+  return v ? decodeURIComponent(v.split('=')[1]) : '';
+}
+async function api(url, opts = {}) {
+  const res = await fetch(url, {
+    headers: { 'Content-Type': 'application/json', 'X-CSRFToken': getCsrf(), ...opts.headers },
+    ...opts
+  });
+  return res.json();
+}
+function post(url, data) { return api(url, { method: 'POST', body: JSON.stringify(data) }); }
+
+function showToast(msg, type = 'default', icon = '✓') {
+  const t = document.getElementById('toast');
+  t.className = 'toast show ' + type;
+  document.getElementById('toast-icon').textContent = icon;
+  document.getElementById('toast-text').textContent = msg;
+  clearTimeout(t._t);
+  t._t = setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+function openModal(id)  { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+function formatDate(s) {
+  if (!s) return '';
+  return new Date(s).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+}
+
+function formatMessage(text) {
+  return text
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.*?)\*/g, '<em>$1</em>')
+    .replace(/\n- /g, '<br>• ')
+    .replace(/\n/g, '<br>');
+}
+
+const STATUS_ICONS = {
+  pending: '🕐', confirmed: '✅', inprogress: '⚡', completed: '🏁', cancelled: '❌',
+  open: '🔴', resolved: '✅', closed: '⚫'
+};
+const SVC_ICONS = {
+  amc:'🛠️', network:'🌐', ipcamera:'📷', pabx:'📞', webdev:'💻',
+  social:'📱', apps:'📲', vat_consult:'📊', vat_reg:'📋',
+  vat_compliance:'📈', vat_returns:'💼', others:'❓'
+};
+
+// ── NAVIGATION ────────────────────────────────────────────────────────────────
+function showPage(name) {
+  prevPage = currentPage;
+  currentPage = name;
+
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+
+  const pg = document.getElementById(`page-${name}`);
+  if (pg) pg.classList.add('active');
+
+  const nav = document.getElementById(`nav-${name}`);
+  if (nav) nav.classList.add('active');
+
+  // Load page data
+  if (name === 'dashboard')      loadDashboard();
+  if (name === 'bookings')       loadBookings();
+  if (name === 'tickets')        loadTickets();
+  if (name === 'notifications')  loadNotifications();
+  if (name === 'profile')        loadProfile();
+  if (name === 'chat' && appChatHistory.length === 0) initChat();
+
+  // FAB
+  const fab = document.getElementById('main-fab');
+  if (fab) {
+    if (name === 'bookings') { fab.textContent = '＋'; fab.style.display = 'flex'; fab.onclick = () => openBookingModal(); }
+    else if (name === 'tickets') { fab.textContent = '＋'; fab.style.display = 'flex'; fab.onclick = () => openTicketModal(); }
+    else fab.style.display = 'none';
+  }
+}
+
+function goBack() { showPage(prevPage || 'dashboard'); }
+
+// ── AUTH ──────────────────────────────────────────────────────────────────────
+function switchAuthTab(tab) {
+  document.querySelectorAll('.auth-tab').forEach((t,i) => t.classList.toggle('active', (i===0&&tab==='login')||(i===1&&tab==='register')));
+  document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'));
+  document.getElementById(tab === 'login' ? 'login-form' : 'register-form').classList.add('active');
+}
+
+async function doLogin() {
+  const username = document.getElementById('login-username').value.trim();
+  const password = document.getElementById('login-password').value;
+  const errEl = document.getElementById('login-error');
+  errEl.style.display = 'none';
+  if (!username || !password) { errEl.textContent = 'Please fill all fields'; errEl.style.display = 'block'; return; }
+  const res = await post(API.login, { username, password });
+  if (res.ok) { initApp(); }
+  else { errEl.textContent = res.error || 'Login failed'; errEl.style.display = 'block'; }
+}
+
+async function doRegister() {
+  const errEl = document.getElementById('reg-error');
+  errEl.style.display = 'none';
+  const data = {
+    name:     document.getElementById('reg-name').value.trim(),
+    username: document.getElementById('reg-username').value.trim(),
+    email:    document.getElementById('reg-email').value.trim(),
+    phone:    document.getElementById('reg-phone').value.trim(),
+    company:  document.getElementById('reg-company').value.trim(),
+    password: document.getElementById('reg-password').value,
+  };
+  if (!data.name || !data.username || !data.email || !data.password) {
+    errEl.textContent = 'Please fill all required fields'; errEl.style.display = 'block'; return;
+  }
+  const res = await post(API.register, data);
+  if (res.ok) { initApp(); }
+  else { errEl.textContent = res.error || 'Registration failed'; errEl.style.display = 'block'; }
+}
+
+async function doLogout() {
+  window.location.href = API.logout;
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+async function initApp() {
+  document.getElementById('auth-screen').style.display = 'none';
+  document.getElementById('app').classList.add('visible');
+
+  try {
+    currentUser = await api(API.me);
+    document.getElementById('topnav-greeting').textContent = currentUser.name.split(' ')[0];
+    if (currentUser.unread_notifications > 0) {
+      const badge = document.getElementById('notif-badge');
+      badge.textContent = currentUser.unread_notifications;
+      badge.style.display = 'flex';
+    }
+    // load services for modals
+    const svcs = await api(API.services);
+    servicesList = svcs.services;
+    populateServiceSelects();
+  } catch(e) {}
+
+  showPage('dashboard');
+  // Add FAB
+  const fab = document.createElement('button');
+  fab.className = 'fab'; fab.id = 'main-fab'; fab.style.display = 'none';
+  document.getElementById('app').appendChild(fab);
+}
+
+function populateServiceSelects() {
+  ['bk-service','tk-category'].forEach(id => {
+    const sel = document.getElementById(id);
+    if (!sel) return;
+    sel.innerHTML = servicesList.map(s => `<option value="${s.key}">${s.label}</option>`).join('');
+  });
+}
+
+// ── DASHBOARD ─────────────────────────────────────────────────────────────────
+async function loadDashboard() {
+  const data = await api(API.dashboard);
+  const s = data.stats;
+  document.getElementById('dash-greeting').textContent = getGreeting() + (currentUser ? `, ${currentUser.name.split(' ')[0]}! 👋` : '!');
+  document.getElementById('dash-active-bookings').textContent = s.active_bookings;
+  document.getElementById('dash-open-tickets').textContent = s.open_tickets;
+  document.getElementById('dash-total').textContent = s.total_bookings;
+  document.getElementById('stat-bookings').textContent = s.total_bookings;
+  document.getElementById('stat-resolved').textContent = s.resolved_tickets;
+  document.getElementById('stat-open-tickets').textContent = s.open_tickets;
+  document.getElementById('stat-active').textContent = s.active_bookings;
+
+  // booking badges
+  if (s.active_bookings > 0) { document.getElementById('nav-bookings-badge').textContent = s.active_bookings; document.getElementById('nav-bookings-badge').style.display = 'flex'; }
+  if (s.open_tickets > 0) { document.getElementById('nav-tickets-badge').textContent = s.open_tickets; document.getElementById('nav-tickets-badge').style.display = 'flex'; }
+
+  const bkEl = document.getElementById('dash-bookings-list');
+  if (!data.recent_bookings.length) {
+    bkEl.innerHTML = '<div class="empty-state" style="padding:24px"><div class="empty-icon">📅</div><p>No bookings yet. <a onclick="openBookingModal()" style="color:var(--red);cursor:pointer;font-weight:600">Book a service</a></p></div>';
+  } else {
+    bkEl.innerHTML = data.recent_bookings.map(b => bookingCard(b)).join('');
+  }
+
+  const tkEl = document.getElementById('dash-tickets-list');
+  if (!data.recent_tickets.length) {
+    tkEl.innerHTML = '<div class="empty-state" style="padding:24px"><div class="empty-icon">🎫</div><p>No support tickets yet.</p></div>';
+  } else {
+    tkEl.innerHTML = data.recent_tickets.map(t => ticketCard(t)).join('');
+  }
+}
+
+function getGreeting() {
+  const h = new Date().getHours();
+  if (h < 12) return 'Good morning';
+  if (h < 17) return 'Good afternoon';
+  return 'Good evening';
+}
+
+function bookingCard(b) {
+  return `<div class="item-card" onclick="showPage('bookings')">
+    <div class="item-icon">${SVC_ICONS[b.service_key]||'🛠️'}</div>
+    <div class="item-body">
+      <div class="item-title">${b.service}</div>
+      <div class="item-meta">
+        <span class="badge badge-${b.status}">${STATUS_ICONS[b.status]||''} ${b.status}</span>
+        <span class="badge badge-date">📅 ${b.date}</span>
+      </div>
+    </div>
+  </div>`;
+}
+
+function ticketCard(t) {
+  return `<div class="item-card" onclick="openTicketDetail(${t.id})">
+    <div class="item-icon">🎫</div>
+    <div class="item-body">
+      <div class="item-title">#${t.id} — ${t.subject}</div>
+      <div class="item-meta">
+        <span class="badge badge-${t.status}">${t.status}</span>
+        <span class="badge badge-${t.priority}">${t.priority}</span>
+        <span class="badge badge-date">${t.date}</span>
+      </div>
+    </div>
+  </div>`;
+}
+
+// ── BOOKINGS ──────────────────────────────────────────────────────────────────
+async function loadBookings() {
+  const el = document.getElementById('bookings-list');
+  el.innerHTML = '<div class="loading"></div>';
+  const data = await api(API.bookings);
+  if (!data.bookings.length) {
+    el.innerHTML = `<div class="empty-state"><div class="empty-icon">📅</div><h3>No bookings yet</h3><p>Book your first IT service</p><br><button class="btn btn-primary btn-sm" onclick="openBookingModal()">+ New Booking</button></div>`;
+    return;
+  }
+  el.innerHTML = data.bookings.map(b => `
+    <div class="item-card">
+      <div class="item-icon">${SVC_ICONS[b.service_key]||'🛠️'}</div>
+      <div class="item-body">
+        <div class="item-title">${b.service}</div>
+        <div class="item-sub">${b.description.slice(0,60)}${b.description.length>60?'…':''}</div>
+        <div class="item-meta">
+          <span class="badge badge-${b.status}">${STATUS_ICONS[b.status]||''} ${b.status}</span>
+          ${b.preferred_date ? `<span class="badge badge-date">📅 ${b.preferred_date}</span>` : ''}
+          <span class="badge badge-date">${b.created_at}</span>
+        </div>
+        ${(b.status==='pending'||b.status==='confirmed') ? `<button class="btn btn-danger btn-sm" style="margin-top:8px" onclick="cancelBooking(${b.id})">Cancel</button>` : ''}
+      </div>
+    </div>`).join('');
+}
+
+function openBookingModal() {
+  document.getElementById('bk-description').value = '';
+  document.getElementById('bk-date').value = '';
+  document.getElementById('bk-time').value = '';
+  openModal('booking-modal');
+}
+
+async function submitBooking() {
+  const data = {
+    service: document.getElementById('bk-service').value,
+    description: document.getElementById('bk-description').value.trim(),
+    preferred_date: document.getElementById('bk-date').value,
+    preferred_time: document.getElementById('bk-time').value,
+  };
+  if (!data.description) { showToast('Please describe your requirements', 'error', '⚠️'); return; }
+  const res = await post(API.bookings, data);
+  if (res.ok) {
+    closeModal('booking-modal');
+    showToast('Booking submitted! We will confirm shortly.', 'success', '✅');
+    loadBookings();
+  } else showToast('Failed to submit booking', 'error', '❌');
+}
+
+async function cancelBooking(id) {
+  if (!confirm('Cancel this booking?')) return;
+  const res = await post(API.cancelBk(id), {});
+  if (res.ok) { showToast('Booking cancelled', 'default', '✓'); loadBookings(); }
+  else showToast(res.error || 'Cannot cancel', 'error', '❌');
+}
+
+// ── TICKETS ───────────────────────────────────────────────────────────────────
+async function loadTickets() {
+  const el = document.getElementById('tickets-list');
+  el.innerHTML = '<div class="loading"></div>';
+  const data = await api(API.tickets);
+  if (!data.tickets.length) {
+    el.innerHTML = `<div class="empty-state"><div class="empty-icon">🎫</div><h3>No support tickets</h3><p>Create a ticket for any IT issue</p><br><button class="btn btn-primary btn-sm" onclick="openTicketModal()">+ New Ticket</button></div>`;
+    return;
+  }
+  el.innerHTML = data.tickets.map(t => `
+    <div class="item-card" onclick="openTicketDetail(${t.id})">
+      <div class="item-icon">🎫</div>
+      <div class="item-body">
+        <div class="item-title">#${t.id} — ${t.subject}</div>
+        <div class="item-sub">${t.category}</div>
+        <div class="item-meta">
+          <span class="badge badge-${t.status}">${t.status}</span>
+          <span class="badge badge-${t.priority}">${t.priority}</span>
+          <span class="badge badge-date">💬 ${t.msg_count}</span>
+          <span class="badge badge-date">${t.created_at}</span>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+function openTicketModal() {
+  document.getElementById('tk-subject').value = '';
+  document.getElementById('tk-message').value = '';
+  openModal('ticket-modal');
+}
+
+async function submitTicket() {
+  const data = {
+    subject:  document.getElementById('tk-subject').value.trim(),
+    category: document.getElementById('tk-category').value,
+    priority: document.getElementById('tk-priority').value,
+    message:  document.getElementById('tk-message').value.trim(),
+  };
+  if (!data.subject || !data.message) { showToast('Please fill subject and description', 'error', '⚠️'); return; }
+  const res = await post(API.tickets, data);
+  if (res.ok) {
+    closeModal('ticket-modal');
+    showToast('Ticket created! We\'ll respond within 24 hours.', 'success', '✅');
+    loadTickets();
+  } else showToast('Failed to create ticket', 'error', '❌');
+}
+
+async function openTicketDetail(id) {
+  currentTicketId = id;
+  showPage('ticket-detail');
+  document.getElementById('ticket-reply-text').value = '';
+  const data = await api(API.ticket(id));
+  document.getElementById('ticket-detail-title').textContent = `#${data.id}`;
+  document.getElementById('ticket-detail-info').innerHTML = `
+    <div class="ticket-info-item"><span>Status</span><strong><span class="badge badge-${data.status}">${data.status}</span></strong></div>
+    <div class="ticket-info-item"><span>Priority</span><strong><span class="badge badge-${data.priority}">${data.priority}</span></strong></div>
+    <div class="ticket-info-item"><span>Category</span><strong>${data.category}</strong></div>
+    <div class="ticket-info-item"><span>Created</span><strong>${data.created_at}</strong></div>
+  `;
+  const thread = document.getElementById('ticket-thread');
+  thread.innerHTML = data.messages.map(m => `
+    <div class="thread-msg ${m.is_staff ? 'staff' : 'client'}">
+      <div class="thread-sender">${m.sender}${m.is_staff ? ' · Support Team' : ''}</div>
+      <div class="thread-text">${m.message}</div>
+      <div class="thread-time">${m.time}</div>
+    </div>`).join('');
+  thread.scrollTop = thread.scrollHeight;
+}
+
+async function sendTicketReply() {
+  const text = document.getElementById('ticket-reply-text').value.trim();
+  if (!text) return;
+  const res = await post(API.ticket(currentTicketId), { message: text });
+  if (res.ok) {
+    showToast('Reply sent!', 'success', '✅');
+    openTicketDetail(currentTicketId);
+  }
+}
+
+// ── AI CHAT ───────────────────────────────────────────────────────────────────
+function initChat() {
+  const msgs = document.getElementById('app-chat-messages');
+  msgs.innerHTML = '';
+  appChatHistory = [];
+  addChatBotMsg("👋 Hi! I'm **Aria**, your AI assistant.\n\nI can help with IT services, bookings, support, network issues, VAT queries — anything Spread International related. What can I do for you?");
+}
+
+function addChatBotMsg(text) {
+  removeChatTyping();
+  const div = document.createElement('div');
+  div.className = 'chat-bubble bot';
+  div.innerHTML = `<div class="bubble-sender">Aria</div>${formatMessage(text)}`;
+  document.getElementById('app-chat-messages').appendChild(div);
+  scrollChatBottom();
+}
+
+function addChatUserMsg(text) {
+  const div = document.createElement('div');
+  div.className = 'chat-bubble user';
+  div.innerHTML = `<div class="bubble-sender">You</div>${escHtml(text)}`;
+  document.getElementById('app-chat-messages').appendChild(div);
+  scrollChatBottom();
+  document.getElementById('chat-pills').style.display = 'none';
+}
+
+function showChatTyping() {
+  const div = document.createElement('div');
+  div.className = 'typing-dots'; div.id = 'chat-typing';
+  div.innerHTML = '<span></span><span></span><span></span>';
+  document.getElementById('app-chat-messages').appendChild(div);
+  scrollChatBottom();
+}
+function removeChatTyping() { const t = document.getElementById('chat-typing'); if (t) t.remove(); }
+function scrollChatBottom() { const el = document.getElementById('app-chat-messages'); el.scrollTop = el.scrollHeight; }
+function escHtml(t) { return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+async function sendAppChat() {
+  const input = document.getElementById('app-chat-input');
+  const text = input.value.trim();
+  if (!text) return;
+  input.value = '';
+  const sendBtn = document.getElementById('app-chat-send');
+  sendBtn.disabled = true;
+  addChatUserMsg(text);
+  appChatHistory.push({ role: 'user', content: text });
+  showChatTyping();
+  const res = await post(API.aiChat, { messages: appChatHistory });
+  const reply = res.reply || "Sorry, I'm having trouble. Please call +971-528269410.";
+  appChatHistory.push({ role: 'assistant', content: reply });
+  addChatBotMsg(reply);
+  sendBtn.disabled = false;
+  input.focus();
+}
+
+function sendChatQuick(text) {
+  document.getElementById('app-chat-input').value = text;
+  sendAppChat();
+}
+
+document.getElementById('app-chat-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter') { e.preventDefault(); sendAppChat(); }
+});
+
+// ── NOTIFICATIONS ─────────────────────────────────────────────────────────────
+async function loadNotifications() {
+  const el = document.getElementById('notif-list');
+  el.innerHTML = '<div class="loading"></div>';
+  document.getElementById('notif-badge').style.display = 'none';
+  const data = await api(API.notifs);
+  if (!data.notifications.length) {
+    el.innerHTML = '<div class="empty-state"><div class="empty-icon">🔔</div><h3>No notifications</h3><p>You\'re all caught up!</p></div>';
+    return;
+  }
+  el.innerHTML = data.notifications.map(n => `
+    <div class="notif-item ${n.is_read ? '' : 'unread'}">
+      <div class="notif-icon-wrap">${n.icon}</div>
+      <div>
+        <div class="notif-title">${n.title}</div>
+        <div class="notif-body">${n.body}</div>
+        <div class="notif-time">${n.time}</div>
+      </div>
+    </div>`).join('');
+}
+
+// ── PROFILE ───────────────────────────────────────────────────────────────────
+async function loadProfile() {
+  if (!currentUser) currentUser = await api(API.me);
+  document.getElementById('profile-avatar').textContent = currentUser.avatar;
+  document.getElementById('profile-name').textContent = currentUser.name;
+  document.getElementById('profile-email').textContent = currentUser.email;
+  document.getElementById('profile-since').textContent = `Member since ${currentUser.member_since}`;
+}
+
+function openEditProfile() {
+  document.getElementById('ep-name').value    = currentUser.name;
+  document.getElementById('ep-email').value   = currentUser.email;
+  document.getElementById('ep-phone').value   = currentUser.phone;
+  document.getElementById('ep-company').value = currentUser.company;
+  document.getElementById('ep-address').value = currentUser.address;
+  openModal('profile-modal');
+}
+
+async function saveProfile() {
+  const data = {
+    name:    document.getElementById('ep-name').value.trim(),
+    email:   document.getElementById('ep-email').value.trim(),
+    phone:   document.getElementById('ep-phone').value.trim(),
+    company: document.getElementById('ep-company').value.trim(),
+    address: document.getElementById('ep-address').value.trim(),
+  };
+  const res = await post(API.updateMe, data);
+  if (res.ok) {
+    currentUser = { ...currentUser, ...data };
+    closeModal('profile-modal');
+    showToast('Profile updated!', 'success', '✅');
+    loadProfile();
+  } else showToast('Failed to update', 'error', '❌');
+}
+
+function callUs()      { window.open('tel:+971528269410'); }
+function emailUs()     { window.open('mailto:it@spreadtechnical.com'); }
+function openWhatsApp(){ window.open('https://api.whatsapp.com/send?phone=+971528269410&text=Hello'); }
+
+// ── STARTUP ───────────────────────────────────────────────────────────────────
+window.addEventListener('DOMContentLoaded', async () => {
+  // Check if already logged in
+  const splash = document.getElementById('splash');
+  try {
+    const me = await api(API.me);
+    if (me.id) {
+      currentUser = me;
+      splash.style.opacity = '0';
+      setTimeout(() => { splash.style.display = 'none'; initApp(); }, 400);
+      return;
+    }
+  } catch(e) {}
+  splash.style.opacity = '0';
+  setTimeout(() => {
+    splash.style.display = 'none';
+    document.getElementById('auth-screen').style.display = 'flex';
+  }, 800);
+});
+
+// PWA install
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  deferredInstall = e;
+  const banner = document.getElementById('install-banner');
+  banner.style.display = 'flex';
+  document.getElementById('install-btn').onclick = async () => {
+    deferredInstall.prompt();
+    const { outcome } = await deferredInstall.userChoice;
+    banner.style.display = 'none';
+  };
+});
+
+// Service Worker
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/static/portal/js/sw.js').catch(() => {});
+}
+
+// Close modals on overlay click
+document.querySelectorAll('.modal-overlay').forEach(overlay => {
+  overlay.addEventListener('click', e => {
+    if (e.target === overlay) overlay.classList.remove('open');
+  });
+});
+</script>
+</body>
+</html>
